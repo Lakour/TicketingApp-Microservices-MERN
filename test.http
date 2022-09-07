@@ -1,0 +1,7 @@
+GET ticketing.dev/api/users/currentuser
+
+###
+POST ticketing.dev/api/users/signup
+content-type: application/json
+
+{"email": "connor", "password": "www"}
