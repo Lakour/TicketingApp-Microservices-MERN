@@ -22,14 +22,24 @@ interface UserDocument extends mongoose.Document{
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+ 
+}, {
+  //delete properties of the object being returned
+  toJSON: { transform(doc, ret){
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.password;
+    delete ret.__v;
+    
+  }}
 });
 
 //check password
 userSchema.pre('save', async function(done){
   //are we changing pw?
   if(this.isModified('password')){
-    //get pw from user document
+    //get pw from user document and hash it
     const hashed = await Password.toHash(this.get('password'))
     this.set("password", hashed)
   }
